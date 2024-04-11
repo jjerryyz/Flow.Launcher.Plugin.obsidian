@@ -1,0 +1,12 @@
+{
+  "ID": "3526acc7-06a3-4620-8f53-dea334e9b274",
+  "ActionKeyword": "ob",
+  "Name": "Obsidian",
+  "Description": "Open your Obsidian node",
+  "Author": "Jerry",
+  "Version": "0.0.1",
+  "Language": "JavaScript",
+  "ExecuteFileName": "./dist/index.js",
+  "Website": "https://github.com/",
+  "IcoPath": "./assets/app.png"
+}
