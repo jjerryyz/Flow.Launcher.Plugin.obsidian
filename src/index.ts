@@ -40,21 +40,29 @@ flow.on('query', (params = []) => {
   })
 
   try {
-    const glob = new Glob('!attachment/*')
+    const glob = new Glob('**/**/*')
 
     const files = []
-    for (const file of glob.scanSync('D:/Obsidian/fuckBrain'))
-      files.push({ file })
+    for (const file of glob.scanSync('D:/Obsidian/fuckBrain')) {
+      if (file.startsWith('attachment'))
+        continue
+      files.push({ file, vault: 'fuckBrain' })
+    }
+    for (const file of glob.scanSync('D:/Obsidian/private')) {
+      if (file.startsWith('attachment'))
+        continue
+      files.push({ file, vault: 'private' })
+    }
 
     const fuze = new Fuse(files, { keys: ['file'] })
 
     fuze.search(query).forEach(({ item }) => {
       result.push({
-        Title: item.file,
+        Title: item.file.replace(/\\/, '/'),
         Subtitle: '',
         JsonRPCAction: {
           method: 'search',
-          parameters: [`obsidian://open?vault=fuckBrain&file=${encodeURIComponent(item.file)}`],
+          parameters: [`obsidian://open?vault=${item.vault}&file=${encodeURIComponent(item.file)}`],
           dontHideAfterAction: false,
         },
         ContextData: [],
