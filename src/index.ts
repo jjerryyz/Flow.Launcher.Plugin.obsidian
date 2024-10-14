@@ -1,6 +1,8 @@
+import { exec } from 'node:child_process'
 import { Glob } from 'bun'
 import open from 'open'
 import Fuse from 'fuse.js'
+import dayjs from 'dayjs'
 import { Flow } from './lib/flow'
 import logger from './lib/logger'
 
@@ -18,7 +20,10 @@ flow.on('query', (params = []) => {
 
   const commandList = [
     ['✨new drawing', 'obsidian://advanced-uri?vault=fuckBrain&commandid=obsidian-excalidraw-plugin%253Aexcalidraw-autocreate-newtab'],
-    ['✨new canvas', 'obsidian://advanced-uri?vault=fuckBrain&commandid=canvas%253Anew-file'],
+    ['✨new note', 'obsidian://advanced-uri?vault=fuckBrain&commandid=quickadd%253Achoice%253A933f1787-0fc4-4200-9485-878c708429e8'],
+    ['📅today', 'obsidian://advanced-uri?vault=fuckBrain&commandid=daily-notes'],
+    ['✨add log', 'obsidian://advanced-uri?vault=fuckBrain&commandid=quickadd%253Achoice%253Af34d1258-cd59-46f3-83fa-1b4602d01fb7'],
+    ['✨git-sync', 'git-sync'],
   ]
 
   const result: any[] = []
@@ -48,7 +53,7 @@ flow.on('query', (params = []) => {
         continue
       files.push({ file, vault: 'fuckBrain' })
     }
-    for (const file of glob.scanSync('D:/Obsidian/private')) {
+    for (const file of glob.scanSync('D:/BaiduNetdiskWorkspace/Obsidian/private')) {
       if (file.startsWith('attachment'))
         continue
       files.push({ file, vault: 'private' })
@@ -57,8 +62,9 @@ flow.on('query', (params = []) => {
     const fuze = new Fuse(files, { keys: ['file'] })
 
     fuze.search(query).forEach(({ item }) => {
+      logger.info('file', { file: item.file })
       result.push({
-        Title: item.file.replace(/\\/, '/'),
+        Title: item.file.replace(/\\/g, '/'),
         Subtitle: '',
         JsonRPCAction: {
           method: 'search',
@@ -80,11 +86,15 @@ flow.on('query', (params = []) => {
 })
 
 flow.on('search', (params) => {
-  logger.info('Search', params)
+  // logger.info('Search', params)
   const [url] = params
 
-  if (url)
-    open(url as string)
+  if (url === 'git-sync') {
+    exec('git -C D://Obsidian//fuckBrain add .')
+    exec('git -C D://Obsidian//fuckBrain commit -m  "sync"')
+    exec('git -C D://Obsidian//fuckBrain push')
+  }
+  else if (url) { open(url as string) }
 })
 
 flow.run()

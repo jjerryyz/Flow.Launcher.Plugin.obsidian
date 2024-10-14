@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "dayjs": "^1.11.11",
     "fuse.js": "^7.0.0",
     "open": "^10.1.0",
     "pathe": "^1.1.2",
