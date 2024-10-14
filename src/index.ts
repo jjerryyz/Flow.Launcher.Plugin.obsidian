@@ -2,7 +2,6 @@ import { exec } from 'node:child_process'
 import { Glob } from 'bun'
 import open from 'open'
 import Fuse from 'fuse.js'
-import dayjs from 'dayjs'
 import { Flow } from './lib/flow'
 import logger from './lib/logger'
 
@@ -94,7 +93,9 @@ flow.on('search', (params) => {
     exec('git -C D://Obsidian//fuckBrain commit -m  "sync"')
     exec('git -C D://Obsidian//fuckBrain push')
   }
-  else if (url) { open(url as string) }
+  else if (url) {
+    open(url as string)
+  }
 })
 
 flow.run()

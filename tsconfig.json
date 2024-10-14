@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "rootDir": "./src",
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
